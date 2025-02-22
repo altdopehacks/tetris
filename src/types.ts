@@ -15,4 +15,6 @@ export type GameState = {
   currentPosition: Position;
   score: number;
   gameOver: boolean;
+  landedPieces: number;
+  backgroundIndex: number;
 };

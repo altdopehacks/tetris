@@ -2,6 +2,14 @@ export const GRID_WIDTH = 10;
 export const GRID_HEIGHT = 20;
 export const CELL_SIZE = 30;
 
+export const SPACE_BACKGROUNDS = [
+  'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80'
+];
+
 export const TETROMINOES: Tetromino[] = [
   {
     // I piece

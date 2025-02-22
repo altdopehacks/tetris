@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { GRID_WIDTH, GRID_HEIGHT, TETROMINOES } from '../constants';
+import { GRID_WIDTH, GRID_HEIGHT, TETROMINOES, SPACE_BACKGROUNDS } from '../constants';
 import type { GameState, Position, Tetromino } from '../types';
 
 const createEmptyGrid = () =>
@@ -17,7 +17,9 @@ export const useTetris = () => {
     nextPiece: getRandomTetromino(),
     currentPosition: { x: Math.floor(GRID_WIDTH / 2) - 1, y: 0 },
     score: 0,
-    gameOver: false
+    gameOver: false,
+    landedPieces: 0,
+    backgroundIndex: 0
   });
 
   const checkCollision = useCallback((position: Position, piece: Tetromino) => {
@@ -47,7 +49,7 @@ export const useTetris = () => {
 
   const mergePieceToGrid = useCallback(() => {
     const newGrid = gameState.grid.map(row => [...row]);
-    const { currentPiece, currentPosition } = gameState;
+    const { currentPiece, currentPosition, landedPieces, backgroundIndex } = gameState;
 
     for (let y = 0; y < currentPiece.shape.length; y++) {
       for (let x = 0; x < currentPiece.shape[y].length; x++) {
@@ -82,13 +84,21 @@ export const useTetris = () => {
       return;
     }
 
+    // Update background every 5 landed pieces
+    const newLandedPieces = landedPieces + 1;
+    const newBackgroundIndex = newLandedPieces % 5 === 0 
+      ? (backgroundIndex + 1) % SPACE_BACKGROUNDS.length 
+      : backgroundIndex;
+
     setGameState(prev => ({
       ...prev,
       grid: newGrid,
       currentPiece: prev.nextPiece,
       nextPiece: getRandomTetromino(),
       currentPosition: { x: Math.floor(GRID_WIDTH / 2) - 1, y: 0 },
-      score: prev.score + (completedLines * 100)
+      score: prev.score + (completedLines * 100),
+      landedPieces: newLandedPieces,
+      backgroundIndex: newBackgroundIndex
     }));
   }, [gameState, checkTopLineExceeded]);
 
@@ -178,6 +188,7 @@ export const useTetris = () => {
     grid: displayGrid,
     score: gameState.score,
     gameOver: gameState.gameOver,
-    nextPiece: gameState.nextPiece
+    nextPiece: gameState.nextPiece,
+    backgroundIndex: gameState.backgroundIndex
   };
 };
